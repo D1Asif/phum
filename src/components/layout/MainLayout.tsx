@@ -1,31 +1,25 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout } from "antd";
 import { Outlet } from "react-router-dom";
-import { adminSidebarItems } from "../../routes/admin.routes";
+import Sidebar from "./Sidebar";
+import { useAppDispatch } from "../../redux/hooks";
+import { logout } from "../../redux/features/auth/authSlice";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content } = Layout;
 
 const MainLayout = () => {
+    const dispatch = useAppDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+    }
+
     return (
         <Layout style={{ height: "100vh" }}>
-            <Sider
-                breakpoint="lg"
-                collapsedWidth="0"
-                onBreakpoint={(broken) => {
-                    console.log(broken);
-                }}
-                onCollapse={(collapsed, type) => {
-                    console.log(collapsed, type);
-                }}
-            >
-                <div 
-                    style={{height: "4rem", color: "white", display: "flex", justifyContent: "center", alignItems: "center"}}
-                >
-                    <h1>PH Uni</h1>
-                </div>
-                <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={adminSidebarItems} />
-            </Sider>
+            <Sidebar />
             <Layout>
-                <Header style={{ padding: 0 }} />
+                <Header>
+                    <Button onClick={handleLogout}>Logout</Button>
+                </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div
                         style={{
@@ -36,9 +30,6 @@ const MainLayout = () => {
                         <Outlet />
                     </div>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
-                </Footer>
             </Layout>
         </Layout>
     )
